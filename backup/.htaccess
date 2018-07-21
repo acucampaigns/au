@@ -1,0 +1,21 @@
+Options +FollowSymLinks
+RewriteEngine On
+RewriteRule ^(admin|dbmanager|assets)($|/) - [L]
+## Removing /
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+## Redirect from html indexes
+RewriteRule ^index.html$ /index.php [L,QSA]
+#RewriteCond %{REQUEST_FILENAME} !^/dbmanager
+RewriteRule ^(.*)/index\.(html|php)$ /index.php?url=$1 [L,QSA]  
+
+## Redirect url to main index
+RewriteRule ^([^./]+)?$ /index.php?url=$1 [L,QSA] 
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]  
+
+## Handle 404 error
+ErrorDocument 404 /pages/404.php
